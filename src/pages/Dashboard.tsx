@@ -30,6 +30,22 @@ const Dashboard = () => {
         >
           <h1 className="text-3xl font-bold text-slate-800 mb-4">glynac.ai</h1>
 
+          {/* Menubar */}
+          <div className="flex space-x-4 mb-4">
+            <Link to="/send-email" className="btn">
+              Send Email
+            </Link>
+            <Link to="/all-emails" className="btn">
+              All Emails
+            </Link>
+            <Link to="/positive-emails" className="btn">
+              Positive Emails
+            </Link>
+            <Link to="/negative-emails" className="btn">
+              Negative Emails
+            </Link>
+          </div>
+
           {/* Conclusions Section */}
           <h2 className="text-2xl font-semibold text-slate-800 mb-4">
             Conclusions

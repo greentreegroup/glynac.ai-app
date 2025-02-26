@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
@@ -11,6 +10,10 @@ import Dashboard from "./pages/Dashboard";
 import CategoryPage from "./pages/CategoryPage";
 import EmployeePage from "./pages/EmployeePage";
 import ConversationPage from "./pages/ConversationPage";
+import SendEmail from "./pages/SendEmail";
+import PositiveEmails from "./pages/PositiveEmails";
+import NegativeEmails from "./pages/NegativeEmails";
+import AllEmails from "./pages/AllEmails";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +77,10 @@ const App = () => {
                 )
               }
             />
+            <Route path="/send-email" element={<SendEmail />} />
+            <Route path="/positive-emails" element={<PositiveEmails />} />
+            <Route path="/negative-emails" element={<NegativeEmails />} />
+            <Route path="/all-emails" element={<AllEmails />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
