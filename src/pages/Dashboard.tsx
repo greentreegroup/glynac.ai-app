@@ -2,14 +2,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  const userInfo = {
-    name: "John Smith",
-    gender: "Male",
-    age: 35,
-    jobTitle: "Senior Manager",
-    pay: "$120,000",
-  };
-
   const conclusions = {
     "Legal Risk": ["David", "Tom", "Jane", "Rachel"],
     "Retention Issues": ["Becky", "Sara", "Andrew"],
