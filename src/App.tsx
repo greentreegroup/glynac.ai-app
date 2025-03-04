@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Layout from "./components/Layout";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +15,14 @@ import SendEmail from "./pages/SendEmail";
 import PositiveEmails from "./pages/PositiveEmails";
 import NegativeEmails from "./pages/NegativeEmails";
 import AllEmails from "./pages/AllEmails";
+import Section1 from "./pages/Section1";
+import Section2 from "./pages/Section2";
+import Section3 from "./pages/Section3";
+import Section4 from "./pages/Section4";
+import Section5 from "./pages/Section5";
+import Section6 from "./pages/Section6";
+import Section7 from "./pages/Section7";
+import Section8 from "./pages/Section8";
 
 const queryClient = new QueryClient();
 
@@ -27,60 +36,19 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={
-                !isAuthenticated ? (
-                  <Login onLogin={() => setIsAuthenticated(true)} />
-                ) : (
-                  <Navigate to="/dashboard" />
-                )
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                isAuthenticated ? (
-                  <Dashboard />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/category/:categoryId"
-              element={
-                isAuthenticated ? (
-                  <CategoryPage />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/employee/:employeeId"
-              element={
-                isAuthenticated ? (
-                  <EmployeePage />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/conversation/:conversationId"
-              element={
-                isAuthenticated ? (
-                  <ConversationPage />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route path="/send-email" element={<SendEmail />} />
-            <Route path="/positive-emails" element={<PositiveEmails />} />
-            <Route path="/negative-emails" element={<NegativeEmails />} />
-            <Route path="/all-emails" element={<AllEmails />} />
+            <Route path="/" element={<Login />} />
+            <Route element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/section1" element={<Section1 />} />
+              <Route path="/section2" element={<Section2 />} />
+              <Route path="/section3" element={<Section3 />} />
+              <Route path="/section4" element={<Section4 />} />
+              <Route path="/section5" element={<Section5 />} />
+              <Route path="/section6" element={<Section6 />} />
+              <Route path="/section7" element={<Section7 />} />
+              <Route path="/section8" element={<Section8 />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

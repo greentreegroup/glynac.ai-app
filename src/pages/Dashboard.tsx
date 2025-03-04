@@ -19,6 +19,16 @@ const Dashboard = () => {
     ],
   };
 
+  // Sample data for the metrics
+  const activeEmployees = 120; // Example number of active employees
+  const employeeEngagementScore = 85; // Example engagement score
+  const overallProductivity = 75; // Example productivity percentage
+  const recentAlerts = [
+    "Alert: Abusive language detected in a recent communication.",
+    "Alert: Performance issue reported for Employee A.",
+    "Alert: Dispute raised between Employee B and Employee C.",
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,22 +38,34 @@ const Dashboard = () => {
           transition={{ duration: 0.5 }}
           className="space-y-8"
         >
-          <h1 className="text-3xl font-bold text-slate-800 mb-4">glynac.ai</h1>
+          <h1 className="text-3xl font-bold text-slate-800 mb-4">Dashboard</h1>
+          <p>Welcome to the dashboard!</p>
 
-          {/* Menubar */}
-          <div className="flex space-x-4 mb-4">
-            <Link to="/send-email" className="btn">
-              Send Email
-            </Link>
-            <Link to="/all-emails" className="btn">
-              All Emails
-            </Link>
-            <Link to="/positive-emails" className="btn">
-              Positive Emails
-            </Link>
-            <Link to="/negative-emails" className="btn">
-              Negative Emails
-            </Link>
+          {/* Employee Overview Section */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-semibold text-slate-800 mb-4">Employee Overview</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 border rounded-md">
+                <h3 className="font-medium">Active Employees</h3>
+                <p className="text-lg">{activeEmployees}</p>
+              </div>
+              <div className="p-4 border rounded-md">
+                <h3 className="font-medium">Employee Engagement Score</h3>
+                <p className="text-lg">{employeeEngagementScore}%</p>
+              </div>
+              <div className="p-4 border rounded-md">
+                <h3 className="font-medium">Overall Productivity</h3>
+                <p className="text-lg">{overallProductivity}%</p>
+              </div>
+              <div className="p-4 border rounded-md">
+                <h3 className="font-medium">Recent Alerts/Anomalies</h3>
+                <ul className="list-disc pl-5">
+                  {recentAlerts.map((alert, index) => (
+                    <li key={index} className="text-sm">{alert}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
 
           {/* Conclusions Section */}

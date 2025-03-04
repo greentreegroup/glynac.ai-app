@@ -1,14 +1,9 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 
-interface LoginProps {
-  onLogin: () => void;
-}
-
-const Login = ({ onLogin }: LoginProps) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -17,7 +12,6 @@ const Login = ({ onLogin }: LoginProps) => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === "demo" && password === "demo") {
-      onLogin();
       navigate("/dashboard");
     } else {
       toast({
@@ -29,14 +23,14 @@ const Login = ({ onLogin }: LoginProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-white p-8 rounded-lg shadow-lg">
+        <div className="bg-white p-6 rounded shadow-md">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-semibold text-slate-800">
               Employee Insights Portal
