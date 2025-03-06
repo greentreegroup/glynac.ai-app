@@ -1,4 +1,9 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { Chart, registerables } from "chart.js";
+
+// Register Chart.js components
+Chart.register(...registerables);
 
 const Section5 = () => {
   // Sample data for Risk Management & Employee Behavior
@@ -11,17 +16,57 @@ const Section5 = () => {
     "Message from Employee D: 'This is unacceptable!'",
     "Message from Employee E: 'You are an idiot!'",
   ];
-  const anomalies = [
-    "Negative language detected in communication with Employee A.",
-    "Missed meeting with Team B.",
-    "Delayed response to task assignment for Employee C.",
-  ];
-  const predictiveTrends = [70, 75, 80, 65, 60]; // Example predictive analytics data
+  const complaintsOverTime = [2, 3, 5, 4, 6]; // Example complaints over time
   const unwantedBehavior = [
     { behavior: "Missed Meetings", count: 3 },
     { behavior: "Lies to Clients", count: 1 },
     { behavior: "Failure to Show Up", count: 2 },
   ];
+
+  const complaintsRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    // Complaints Over Time Chart
+    if (complaintsRef.current) {
+      const ctx = complaintsRef.current.getContext("2d");
+      if (ctx) {
+        const data = {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+          datasets: [{
+            label: 'Complaints',
+            data: complaintsOverTime,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            fill: true,
+          }],
+        };
+
+        new Chart(ctx, {
+          type: 'line', // Use 'line' for complaints over time
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Weeks',
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Number of Complaints',
+                },
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+    }
+  }, [complaintsOverTime]);
 
   return (
     <div className="min-h-screen bg-slate-50 py-8">
@@ -68,9 +113,10 @@ const Section5 = () => {
           {/* Disputes & Complaints Section */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-2xl font-semibold text-slate-800 mb-4">Disputes & Complaints</h2>
-            <p className="text-sm">A line chart or pie chart showing increasing/decreasing trends in employee complaints or conflicts with leadership.</p>
-            {/* Placeholder for chart */}
-            <div className="h-32 bg-gray-200 mt-2 rounded-md"></div>
+            <p className="text-sm">A line chart showing an increase in complaints over a period of time.</p>
+            <div className="h-64 bg-gray-200 mt-2 rounded-md">
+              <canvas ref={complaintsRef} style={{ height: '100%', width: '100%' }}></canvas>
+            </div>
           </div>
 
           {/* Unwanted Behavior Section */}

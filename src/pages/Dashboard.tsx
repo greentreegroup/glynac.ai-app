@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Chart, registerables } from "chart.js";
+import { useEffect, useRef } from "react";
+
+// Register Chart.js components
+Chart.register(...registerables);
 
 const Dashboard = () => {
+  const chartRef = useRef<HTMLCanvasElement | null>(null); // Create a ref for the canvas
+
   const conclusions = {
     "Legal Risk": ["David", "Tom", "Jane", "Rachel"],
     "Retention Issues": ["Becky", "Sara", "Andrew"],
@@ -28,6 +35,73 @@ const Dashboard = () => {
     "Alert: Performance issue reported for Employee A.",
     "Alert: Dispute raised between Employee B and Employee C.",
   ];
+
+  // Sample data for team activity
+  const productivityTrends = [70, 75, 80, 65, 60]; // Example productivity trends over time
+  const performanceInsights = [
+    "Employee A has shown a significant increase in productivity.",
+    "Employee B needs to improve response times.",
+    "AI detected potential burnout signs in Employee C.",
+  ];
+
+  useEffect(() => {
+    if (chartRef.current) {
+      const ctx = chartRef.current.getContext("2d"); // Get the 2D context
+      if (ctx) {
+        // Sample data for the line chart
+        const data = {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'], // X-axis labels
+          datasets: [
+            {
+              label: 'Productivity Trends',
+              data: productivityTrends, // Y-axis data points
+              borderColor: 'rgba(75, 192, 192, 1)', // Line color
+              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+              borderWidth: 2,
+              fill: true, // Fill the area under the line
+            },
+          ],
+        };
+
+        // Create the line chart
+        const lineChart = new Chart(ctx, {
+          type: 'line', // Use 'line' for a line chart
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allow the canvas to resize
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Weeks', // X-axis title
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Productivity (%)', // Y-axis title
+                },
+                beginAtZero: true, // Start Y-axis at zero
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+              },
+            },
+          },
+        });
+
+        // Cleanup function to destroy the chart on component unmount
+        return () => {
+          lineChart.destroy();
+        };
+      } else {
+        console.error("Failed to get canvas context");
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 py-8">
@@ -68,63 +142,22 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Conclusions Section */}
-          <h2 className="text-2xl font-semibold text-slate-800 mb-4">
-            Conclusions
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {Object.entries(conclusions).map(([category, employees]) => (
-              <div
-                key={category}
-                className="p-4 bg-slate-50 rounded-lg transition-all hover:shadow-md"
-              >
-                <Link
-                  to={`/category/${category.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="text-lg font-medium text-accent hover:text-accent/80"
-                >
-                  {category}
-                </Link>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {employees.map((employee) => (
-                    <Link
-                      key={employee}
-                      to={`/employee/${employee.toLowerCase()}`}
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors"
-                    >
-                      {employee}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Team Activity Overview Section */}
+          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+            <h2 className="text-2xl font-semibold text-slate-800 mb-4">Team Activity Overview</h2>
+            <p className="text-sm">A comprehensive view of your team's overall activity, including productivity trends, performance, and any AI-driven insights or anomalies.</p>
 
-          {/* Reports Section */}
-          <h2 className="text-2xl font-semibold text-slate-800 mb-4">
-            Reports
-          </h2>
-          <div className="space-y-4">
-            {Object.entries(reports).map(([category, employees]) => (
-              <div
-                key={category}
-                className="p-4 bg-slate-50 rounded-lg transition-all hover:shadow-md"
-              >
-                <h3 className="text-lg font-medium text-slate-800 mb-2">
-                  {category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {employees.map((employee) => (
-                    <Link
-                      key={employee}
-                      to={`/employee/${employee.toLowerCase()}`}
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors"
-                    >
-                      {employee}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+            {/* Productivity trends chart */}
+            <div className="h-64 bg-gray-200 mt-2 rounded-md mb-4">
+              <canvas ref={chartRef} style={{ height: '100%', width: '100%' }}></canvas> {/* Render the canvas */}
+            </div>
+
+            <h3 className="font-medium">Performance Insights</h3>
+            <ul className="list-disc pl-5 mt-2">
+              {performanceInsights.map((insight, index) => (
+                <li key={index} className="text-sm">{insight}</li>
+              ))}
+            </ul>
           </div>
         </motion.div>
       </div>
