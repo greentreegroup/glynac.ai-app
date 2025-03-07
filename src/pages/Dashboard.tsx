@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Chart, registerables } from "chart.js";
 import { useEffect, useRef } from "react";
+import Sidebar from '../components/Sidebar'; // Import the existing Sidebar component
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -43,6 +44,8 @@ const Dashboard = () => {
     "Employee B needs to improve response times.",
     "AI detected potential burnout signs in Employee C.",
   ];
+
+  
 
   useEffect(() => {
     if (chartRef.current) {
@@ -104,8 +107,8 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen bg-slate-50">
+      <div className="flex-grow p-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -148,8 +151,8 @@ const Dashboard = () => {
             <p className="text-sm">A comprehensive view of your team's overall activity, including productivity trends, performance, and any AI-driven insights or anomalies.</p>
 
             {/* Productivity trends chart */}
-            <div className="h-64 bg-gray-200 mt-2 rounded-md mb-4">
-              <canvas ref={chartRef} style={{ height: '100%', width: '100%' }}></canvas> {/* Render the canvas */}
+            <div className="h-32 bg-gray-200 mt-2 rounded-md mb-4">
+              <p className="text-center pt-12">Productivity Trends Chart Placeholder</p>
             </div>
 
             <h3 className="font-medium">Performance Insights</h3>
