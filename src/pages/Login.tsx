@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -11,14 +11,21 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === "demo" && password === "demo") {
-      navigate("/dashboard");
+    const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+
+    // Check if the entered username and password match any account
+    const isValidUser = accounts.some(account => 
+        account.username === username && account.password === password
+    );
+
+    if (isValidUser) {
+        navigate("/dashboard");
     } else {
-      toast({
-        title: "Invalid credentials",
-        description: "Please use demo/demo to log in",
-        variant: "destructive",
-      });
+        toast({
+            title: "Invalid credentials",
+            description: "Please enter a valid username and password.",
+            variant: "destructive",
+        });
     }
   };
 
@@ -79,8 +86,17 @@ const Login = () => {
               Sign in
             </button>
           </form>
-          <div className="mt-4 text-center text-sm text-slate-500">
-            Use demo/demo to sign in
+          
+          <div className="mt-4 text-center">
+            <Link to="/register" className="text-sm text-blue-500 hover:underline">
+              Create Account
+            </Link>
+          </div>
+
+          <div className="mt-4 text-center">
+            <Link to="/accounts" className="text-sm text-blue-500 hover:underline">
+              View Accounts
+            </Link>
           </div>
         </div>
       </motion.div>
@@ -89,3 +105,6 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
