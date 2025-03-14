@@ -1,0 +1,19 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model LoginPage {
+  id          Int      @id @default(autoincrement()) // SERIAL in PostgreSQL
+  email       String
+  password    String
+  name        String
+  role        String
+  is_active   Boolean
+  date_created DateTime @default(now()) // Default value for CURRENT_TIMESTAMP
+}
+
