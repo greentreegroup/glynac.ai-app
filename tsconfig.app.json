@@ -26,5 +26,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "prisma/server.js", "src/lib/prisma.js", "src/pages/api/users.ts"]
+  "include": ["src", "prisma/server.js", "src/lib/prisma.ts", "src/pages/api/users.ts"]
 }

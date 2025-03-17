@@ -9,13 +9,9 @@ import UserAvatar from './components/UserAvatar';
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import CategoryPage from "./pages/CategoryPage";
-import EmployeePage from "./pages/EmployeePage";
-import ConversationPage from "./pages/ConversationPage";
-import SendEmail from "./pages/SendEmail";
-import PositiveEmails from "./pages/PositiveEmails";
-import NegativeEmails from "./pages/NegativeEmails";
-import AllEmails from "./pages/AllEmails";
+import Accounts from "./pages/Accounts";
+import Register from './pages/Register';
+
 import Section1 from "./pages/Section1";
 import Section2 from "./pages/Section2";
 import Section3 from "./pages/Section3";
@@ -24,8 +20,7 @@ import Section5 from "./pages/Section5";
 import Section6 from "./pages/Section6";
 import Section7 from "./pages/Section7";
 import Section8 from "./pages/Section8";
-import Register from './pages/Register';
-import Accounts from "./pages/Accounts";
+
 
 const queryClient = new QueryClient();
 
@@ -38,6 +33,8 @@ const App = () => {
     avatar: "", // No avatar provided
   };
 
+  
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -47,6 +44,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/accounts" element={<Accounts  />} />
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/section1" element={<Section1 />} />
@@ -58,7 +56,7 @@ const App = () => {
               <Route path="/section7" element={<Section7 />} />
               <Route path="/section8" element={<Section8 />} />
             </Route>
-            <Route path="/accounts" element={<Accounts />} />
+            
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </BrowserRouter>
