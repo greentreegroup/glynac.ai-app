@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Accounts() {
+  const navigate = useNavigate();
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
@@ -30,6 +32,7 @@ export default function Accounts() {
                 <th className="border border-gray-300 p-2">ID</th>
                 <th className="border border-gray-300 p-2">Name</th>
                 <th className="border border-gray-300 p-2">Email</th>
+                <th className="border border-gray-300 p-2">Password</th>
                 <th className="border border-gray-300 p-2">Role</th>
                 <th className="border border-gray-300 p-2">Active</th>
                 <th className="border border-gray-300 p-2">Created At</th>
@@ -42,6 +45,7 @@ export default function Accounts() {
                     <td className="border border-gray-300 p-2">{account.id}</td>
                     <td className="border border-gray-300 p-2">{account.name}</td>
                     <td className="border border-gray-300 p-2">{account.email}</td>
+                    <td className="border border-gray-300 p-2">{account.password}</td>
                     <td className="border border-gray-300 p-2">{account.role}</td>
                     <td className="border border-gray-300 p-2">
                       {account.is_active ? "✅" : "❌"}
@@ -53,7 +57,7 @@ export default function Accounts() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="border border-gray-300 p-2 text-center">
+                  <td colSpan={7} className="border border-gray-300 p-2 text-center">
                     No accounts found.
                   </td>
                 </tr>
@@ -61,8 +65,15 @@ export default function Accounts() {
             </tbody>
           </table>
         </div>
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   );
-  
 }

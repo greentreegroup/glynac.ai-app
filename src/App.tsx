@@ -5,7 +5,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "./components/Layout";
-import UserAvatar from './components/UserAvatar';
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -27,11 +26,7 @@ const queryClient = new QueryClient();
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const user = {
-    id: "1",
-    name: "John Doe",
-    avatar: "", // No avatar provided
-  };
+  
 
   
 
@@ -60,7 +55,6 @@ const App = () => {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </BrowserRouter>
-        <UserAvatar user={user} />
       </TooltipProvider>
     </QueryClientProvider>
   );

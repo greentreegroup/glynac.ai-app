@@ -9,23 +9,34 @@ const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
 
-    // Check if the entered username and password match any account
-    const isValidUser = accounts.some(account => 
-        account.username === username && account.password === password
-    );
+    try {
+      const response = await fetch("http://localhost:3001/api/accounts"); // Fetch accounts from API
+      const accounts = await response.json(); // Parse the JSON response
 
-    if (isValidUser) {
-        navigate("/dashboard");
-    } else {
-        toast({
-            title: "Invalid credentials",
-            description: "Please enter a valid username and password.",
-            variant: "destructive",
-        });
+      // Check if the entered username and password match any account
+      const isValidUser = accounts.some(account => 
+          account.email === username && account.password === password
+      );
+
+      if (isValidUser) {
+          navigate("/dashboard"); // Redirect to dashboard if valid
+      } else {
+          toast({
+              title: "Invalid credentials",
+              description: "Please enter a valid username and password.",
+              variant: "destructive",
+          });
+      }
+    } catch (error) {
+      console.error("Error fetching accounts:", error);
+      toast({
+          title: "Error",
+          description: "There was an error fetching accounts.",
+          variant: "destructive",
+      });
     }
   };
 
