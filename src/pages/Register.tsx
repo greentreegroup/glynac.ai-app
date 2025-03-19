@@ -1,28 +1,92 @@
+// src/pages/Register.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
+import { z } from "zod"; // Import Zod
 
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState(''); // Add email state
     const navigate = useNavigate();
     const { toast } = useToast();
 
-    const handleRegister = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Save the username and password to local storage
-        const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-        accounts.push({ username, password });
-        localStorage.setItem('accounts', JSON.stringify(accounts));
+    // Define the Zod schema for validation
+    const registrationSchema = z.object({
+        email: z.string().email("Invalid email format"), // Validate email format
+        password: z.string()
+            .min(8, "Password must be at least 8 characters long") // Minimum length
+            .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"), // Special character requirement
+        username: z.string()
+            .min(1, "Username is required") // Username is required
+            .max(20, "Username must be at most 20 characters long"), // Maximum length
+    });
 
-        // Show a success message
-        toast({
-            title: "Account Created",
-            description: "You can now log in with your new account.",
-            variant: "default",
-        });
-        navigate('/'); // Redirect to login after registration
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Validate the input data
+        try {
+            registrationSchema.parse({
+                email,
+                password,
+                username,
+            });
+
+            // Derive the name from the email
+            const name = username.split('@')[0]; // Get the part before the '@'
+
+            const response = await fetch("http://localhost:3001/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    name: name,
+                    role: "user",
+                    is_active: true,
+                    date_created: new Date().toISOString(), // Current date in ISO format
+                }),
+            });
+
+            if (response.ok) {
+                // Show a success message
+                toast({
+                    title: "Account Created",
+                    description: "You can now log in with your new account.",
+                    variant: "default",
+                });
+                navigate('/'); // Redirect to login after registration
+            } else {
+                const errorData = await response.json();
+                toast({
+                    title: "Error",
+                    description: errorData.error || "Failed to create account.",
+                    variant: "destructive",
+                });
+            }
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                // Handle Zod validation errors
+                error.errors.forEach(err => {
+                    toast({
+                        title: "Validation Error",
+                        description: err.message,
+                        variant: "destructive",
+                    });
+                });
+            } else {
+                console.error("Error during registration:", error);
+                toast({
+                    title: "Error",
+                    description: "There was an error creating your account.",
+                    variant: "destructive",
+                });
+            }
+        }
     };
 
     return (
@@ -41,6 +105,23 @@ const Register = () => {
                         <p className="text-slate-500 mt-2">Fill in the details to create a new account</p>
                     </div>
                     <form onSubmit={handleRegister} className="space-y-6">
+                        <div>
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-slate-700"
+                            >
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                type="text"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                                focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                                placeholder="Enter your email"
+                            />
+                        </div>
                         <div>
                             <label
                                 htmlFor="username"
