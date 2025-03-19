@@ -14,23 +14,21 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Find user by email
         const user = await prisma.loginPage.findUnique({
           where: { email: credentials.email },
         });
 
-        // If user not found or password does not match
         if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
           throw new Error("Invalid email or password");
         }
 
-        // Return user object if authentication is successful
         return { id: user.id, email: user.email, name: user.name };
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/login', // Custom sign-in page
+    signIn: "/", // Custom login page
   },
   session: {
     strategy: "jwt",
